@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: order-processing-service
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/orderdb
+    username: postgres
+    password: postgres
+    pool:
+      enabled: true
+      initial-size: 10
+      max-size: 50
+      max-idle-time: 30m
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.upside.orderprocessing: DEBUG
+    io.r2dbc.postgresql: INFO
+    reactor.netty: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Custom configurations
+app:
+  order:
+    batch-size: 1000
+    cache:
+      ttl: 300
+    processing:
+      thread-pool-size: 20
+      queue-capacity: 10000 

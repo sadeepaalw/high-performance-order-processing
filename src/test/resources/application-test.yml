@@ -1,0 +1,34 @@
+spring:
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: 
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+
+logging:
+  level:
+    root: INFO
+    com.upside.orderprocessing: DEBUG
+    io.r2dbc.postgresql: INFO
+    reactor.netty: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Custom configurations
+app:
+  order:
+    batch-size: 1000
+    cache:
+      ttl: 300
+    processing:
+      thread-pool-size: 20
+      queue-capacity: 10000 
